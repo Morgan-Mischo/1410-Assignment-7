@@ -1,0 +1,102 @@
+package scan;
+
+import static org.junit.Assert.*;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import org.junit.Test;
+
+public class MyScannerTests
+{
+
+    /**
+     * A test if hasNext is implemented correctly
+     */
+    
+    @Test
+    public void correctHasNext ()
+    {
+        MyScanner test = new MyScanner ("Hi I'm Morgan"); 
+        assertTrue(test.hasNext()); 
+        
+    }
+    
+    
+ 
+    
+    /**
+     * A test if next is implemented correctly
+     */
+    
+    @Test
+    public void correctNext ()
+    {
+        MyScanner test = new MyScanner ("Hi I am Morgan"); 
+        assertEquals("Hi", test.next()); 
+        
+    }
+    
+    
+    
+    /**
+     * A test if next returns a NoSuchElementException
+     */
+    
+    @Test(expected = NoSuchElementException.class)
+    public void noNext ()
+    {
+        MyScanner test = new MyScanner (""); 
+        assertEquals("", test.next()); 
+        
+    }
+    
+    
+    /**
+     * A test if hasNextInt is implemented correctly
+     */
+    
+    @Test
+    public void correctHasNextInt ()
+    {
+        MyScanner test = new MyScanner ("8 9 12 3"); 
+        assertTrue(test.hasNextInt());
+        
+    }
+    
+    
+    /** 
+     * A test if nextInt is implemented correctly
+     */
+    
+    @Test 
+    public void correctNextInt ()
+    {
+        MyScanner test = new MyScanner ("8 9 12 3");
+        assertEquals(8, test.nextInt()); 
+    }
+    
+    
+    /**
+     * A test if nextInt throws an InputMismatchException
+     */
+    
+    @Test(expected = InputMismatchException.class)
+    public void mismatchNextInt ()
+    {
+        MyScanner test = new MyScanner ("Hi I'm Morgan"); 
+        assertEquals("Hi", test.nextInt()); 
+    }
+    
+    
+    /**
+     * A test if nextInt throws a NoSuchElement exception
+     */
+    
+    @Test(expected = NoSuchElementException.class)
+    public void noNextInt ()
+    {
+        MyScanner test = new MyScanner (""); 
+        assertEquals("", test.nextInt());
+    }
+
+
+}
