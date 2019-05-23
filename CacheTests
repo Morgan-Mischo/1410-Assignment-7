@@ -1,0 +1,337 @@
+package cs1410;
+
+import static org.junit.Assert.*;
+import java.util.Scanner;
+import org.junit.Test;
+
+public class CacheTests
+{
+    /**
+     * An example test for Cache objects
+     */
+    @Test
+    public void test ()
+    {
+        Cache c = new Cache("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045");
+        assertEquals("GCRQWK", c.getGcCode());
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * A test case where all seven attributes are correctly entered
+     */
+    @Test
+    public void missingNothing ()
+    {
+        
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045"); 
+        assertEquals("GCRQWK", c.getGcCode()); 
+        assertEquals("Old Three Tooth", c.getTitle()); 
+        assertEquals("geocadet", c.getOwner());
+        assertEquals("3.5", c.getDifficulty()); 
+        assertEquals("3", c.getTerrain()); 
+        assertEquals("N40 45.850", c.getLatitude()); 
+        assertEquals("W111 48.045", c.getLongitude()); 
+   
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * A test to see if something is missing
+     */
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void tooFewAttributes ()
+    {
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850"); 
+        
+        String myString = c.toString(); 
+        Scanner scnr = new Scanner(myString);
+        int count = 0;
+        int myNum = 0; 
+        
+        int bad = 0; 
+        
+        while(myNum < myString.length()-1)
+        {
+           char a = scnr.next().charAt(myNum); 
+           if(a == '\t') 
+           {
+               count++; 
+           }
+           myNum++; 
+        }
+        
+        if(count < 6)
+        {
+          bad = count;   
+        }
+        
+        assertEquals(bad, c.getNumberTabs(myString)); 
+        
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * A test to see if there are too many attributes
+     */
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void tooManyAttributes ()
+    {
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850"); 
+        
+        String myString = c.toString(); 
+        Scanner scnr = new Scanner(myString);
+        int count = 0;
+        int myNum = 0; 
+        
+        int bad = 0; 
+        
+        while(myNum < myString.length()-1)
+        {
+           char a = scnr.next().charAt(myNum); 
+           if(a == '\t') 
+           {
+               count++; 
+           }
+           myNum++; 
+        }
+        
+        if(count > 6)
+        {
+          bad = count;   
+        }
+        
+        assertEquals(bad, c.getNumberTabs(myString)); 
+        
+    }
+    
+
+    
+    
+    
+    
+    /**
+     * A test case where something extra is added
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void somethingAdded ()
+    {
+        
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\tSomething Added"); 
+        assertEquals("GCRQWK", c.getGcCode()); 
+        assertEquals("Old Three Tooth", c.getTitle()); 
+        assertEquals("geocadet", c.getOwner());
+        assertEquals("3.5", c.getDifficulty()); 
+        assertEquals("3", c.getTerrain()); 
+        assertEquals("N40 45.850", c.getLatitude()); 
+        assertEquals("W111 48.045", c.getLongitude()); 
+        
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * A test case where GcCode isn't entered correctly
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void codeWrong ()
+    {
+        Cache c = new Cache ("A59836\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045"); 
+        c.getGcCode(); 
+        
+    }
+    
+    
+
+    
+    
+        
+    /**
+     * A test case where Difficulty is too big
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void difficultyWrong ()
+    {
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\tgeocadet\t8.0\t3\tN40 45.850\tW111 48.045"); 
+        c.getDifficulty(); 
+    }
+        
+    /**
+     * A test where the difficulty is correct
+     */
+    @Test
+    public void difficultyRight()
+    {
+        Cache c = new Cache("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045");
+        assertTrue(c.getDifficulty() == 3.5); 
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * A test case where Terrain is too big
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void terrainWrong ()
+    {
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t8.0\tN40 45.850\tW111 48.045"); 
+        c.getTerrain(); 
+    }
+    
+    
+    /**
+     * A test where the terrain is correct
+     */
+    @Test
+    public void terrainRight()
+    {
+        Cache c = new Cache("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045");
+        assertTrue(c.getTerrain()==3); 
+    }
+    
+    
+    
+    
+    
+    /**
+     * A test where title is just whitespace
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void titleWhitespace ()
+    {
+        Cache c = new Cache ("GCRQWK\t    \tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045"); 
+        assertEquals(c.getTitle().isEmpty(), c.getTitle()); 
+    }
+    
+    
+    /**
+     * An test where title is correct
+     */
+    @Test
+    public void titleCorrect ()
+    {
+        Cache c = new Cache("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045");
+        assertEquals("Old Three Tooth", c.getTitle());
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * A test where owner is just whitespace
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void ownerWhitespace ()
+    {
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\t     \t3.5\t3\tN40 45.850\tW111 48.045");
+        assertEquals(c.getOwner().trim().isEmpty(), true); 
+    }
+    
+    
+    /**
+     * An test where owner is correct
+     */
+    @Test
+    public void ownerCorrect ()
+    {
+        Cache c = new Cache("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045");
+        assertEquals("geocadet", c.getOwner());
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * A test where latitude is just whitespace
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void latitudeWhitespace ()
+    {
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\t     \tW111 48.045"); 
+        assertEquals(c.getLatitude().trim().isEmpty(), c.getLatitude()); 
+    }
+    
+    
+    /**
+     * An test where latitude is correct
+     */
+    @Test
+    public void latitudeCorrect ()
+    {
+        Cache c = new Cache("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045");
+        assertEquals("N40 45.850", c.getLatitude());
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * A test where longitude is just whitespace
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void longitudeWhitespace ()
+    {
+        Cache c = new Cache ("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\t       "); 
+        assertEquals(c.getLongitude().trim().isEmpty(), c.getLongitude()); 
+    }
+    
+    
+    /**
+     * An test where longitude is correct
+     */
+    @Test
+    public void longitudeCorrect ()
+    {
+        Cache c = new Cache("GCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045");
+        assertEquals("W111 48.045", c.getLongitude());
+    }
+    
+    
+    
+
+        
+   
+        
+        
+    
+    
+    
+    
+    
+    
+    
+}
