@@ -1,0 +1,279 @@
+package cs1410;
+
+import static org.junit.Assert.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import org.junit.Test;
+
+public class CacheListTests
+{
+    /**
+     * An example test for CacheList objects
+     */
+    @Test
+    public void test () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("GCABCD", selected.get(0).getGcCode());
+    }
+    
+    
+    /**
+     * Throws IllegalArgumentException if the line doesn't contain all attributes
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void notAll () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "As The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select(); 
+        assertEquals(1, selected.size()); 
+        assertEquals("", selected.get(0).getGcCode()); 
+        
+    }
+    
+    /**
+     * Throws IllegalArgumentException if the line contains too many attributes
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void tooMany () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\tHello\tGoodbye\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+    }
+    
+    
+    
+    
+    
+    /**
+     * A test case where GcCode isn't entered correctly
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void codeWrong () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "ABCDEF\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("ABCDEF", selected.get(0).getGcCode());
+        
+    }
+    
+    
+
+    
+    
+        
+    /**
+     * A test case where Difficulty is too big
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void difficultyWrong () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t900\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("900", selected.get(0).getDifficulty());
+    }
+        
+    /**
+     * A test where the difficulty is correct
+     */
+    @Test
+    public void difficultyRight() throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("1", selected.get(0).getDifficulty());
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * A test case where Terrain is too big
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void terrainWrong () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t500\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("500", selected.get(0).getTerrain());
+    }
+    
+    
+    /**
+     * A test where the terrain is correct
+     */
+    @Test
+    public void terrainRight() throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("1", selected.get(0).getTerrain());
+    }
+    
+    
+    
+    
+    
+    /**
+     * A test where title is just whitespace
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void titleWhitespace () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\t        \tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setOwnerConstraint("bunny");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("        ", selected.get(0).getTitle());
+    }
+    
+    
+    /**
+     * An test where title is correct
+     */
+    @Test
+    public void titleCorrect () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("As The World Turns", selected.get(0).getTitle());
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * A test where owner is just whitespace
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void ownerWhitespace () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\t       \t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("       ", selected.get(0).getOwner());
+    }
+    
+    
+    /**
+     * An test where owner is correct
+     */
+    @Test
+    public void ownerCorrect () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("bunny", selected.get(0).getOwner());;
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * A test where latitude is just whitespace
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void latitudeWhitespace () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\t       \tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("       ", selected.get(0).getLatitude());
+    }
+    
+    
+    /**
+     * An test where latitude is correct
+     */
+    @Test
+    public void latitudeCorrect () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("N40 45.875", selected.get(0).getLatitude());
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * A test where longitude is just whitespace
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void longitudeWhitespace () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\t      \nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("      ", selected.get(0).getLongitude());
+    }
+    
+    
+    /**
+     * An test where longitude is correct
+     */
+    @Test
+    public void longitudeCorrect () throws IOException
+    {
+        CacheList clist = new CacheList(new Scanner(
+                "GCABCD\tAs The World Turns\tbunny\t1\t1\tN40 45.875\tW111 48.986\nGCRQWK\tOld Three Tooth\tgeocadet\t3.5\t3\tN40 45.850\tW111 48.045\n"));
+        clist.setTitleConstraint("Turns");
+        ArrayList<Cache> selected = clist.select();
+        assertEquals(1, selected.size());
+        assertEquals("W111 48.986", selected.get(0).getLongitude());
+    }
+    
+    
+}
